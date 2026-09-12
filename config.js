@@ -20,6 +20,6 @@
    ============================================================ */
 
 window.SUPA = {
-  url: "https://tgrivxtuaaftffvgklkv.supabase.co",
+  url: "https://supabase.com/dashboard/project/tgrivxtuaaftffvgklkv",
   key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRncml2eHR1YWFmdGZmdmdrbGt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxOTgwODYsImV4cCI6MjEwNDc3NDA4Nn0.gHoPYtoQpDz4Ze0kU_zeiIxaFCwmxnBLRzsglSQRuKw",
 };
