@@ -40,7 +40,28 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
 
   const url = new URL(req.url);
-  // Off-site calls (Open Food Facts, the Anthropic API) always go to the network.
+
+  // Exercise demo images: cache them the first time they're viewed so they
+  // still work in a basement gym. Opaque responses cache fine for images.
+  if (url.hostname === "raw.githubusercontent.com") {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE + "-img");
+        const hit = await cache.match(req);
+        if (hit) return hit;
+        try {
+          const res = await fetch(req);
+          if (res) cache.put(req, res.clone());
+          return res;
+        } catch {
+          return new Response("", { status: 504 });
+        }
+      })()
+    );
+    return;
+  }
+
+  // Other off-site calls (Open Food Facts, the Anthropic API) always go to the network.
   if (url.origin !== self.location.origin) return;
 
   const isDoc =
