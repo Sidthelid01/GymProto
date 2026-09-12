@@ -20,6 +20,6 @@
    ============================================================ */
 
 window.SUPA = {
-  url: "https://tgrivxtuaaftffvgklkv.supabase.co",
+  url: "https://tgrivxtuaaftffvgklkv.supabase.co/rest/v1/",
   key: "sb_publishable_sKRI85-rJr3kd_Cb_wrzyQ_rKmPS_gl",
 };
