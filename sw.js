@@ -29,7 +29,20 @@ self.addEventListener("install", (event) => {
   );
 });
 
-self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
+self.addEventListener("activate", (event) =>
+  event.waitUntil(
+    (async () => {
+      // Drop any config.js cached by an older version of this worker.
+      try {
+        const cache = await caches.open(CACHE);
+        for (const req of await cache.keys()) {
+          if (new URL(req.url).pathname.endsWith("config.js")) await cache.delete(req);
+        }
+      } catch { /* nothing to clear */ }
+      await self.clients.claim();
+    })()
+  )
+);
 
 self.addEventListener("message", (event) => {
   if (event.data === "skipWaiting") self.skipWaiting();
@@ -100,6 +113,20 @@ self.addEventListener("fetch", (event) => {
         }
         return (await fromNetwork) || new Response("Offline", { status: 503 });
       })()
+    );
+    return;
+  }
+
+  // config.js must never be served stale — a cached blank copy would leave the
+  // app permanently unable to see credentials that have since been filled in.
+  if (url.pathname.endsWith("config.js")) {
+    event.respondWith(
+      fetch(req, { cache: "no-store" }).catch(async () => {
+        const cache = await caches.open(CACHE);
+        return (await cache.match(req)) || new Response("", {
+          status: 200, headers: { "Content-Type": "text/javascript" },
+        });
+      })
     );
     return;
   }
