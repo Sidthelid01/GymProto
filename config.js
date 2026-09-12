@@ -1,22 +1,22 @@
 /* ============================================================
    Gym Rank — your Supabase details.
 
-   Edit the two lines below, upload this file once, and never
-   touch it again. Updates to index.html won't overwrite it.
+   ONE THING LEFT TO DO: paste your publishable key below,
+   between the quotes, using the copy button in Supabase
+   (Project Settings → API → Publishable key).
 
-   Find both values in Supabase:
-     Project Settings → API
-       • Project URL   → paste into url
-       • anon / public key → paste into key
+   Then upload this file to your repo alongside index.html.
+   Everyone who opens your link gets it automatically — your
+   friends never see this file and never paste anything.
 
-   Is it safe to have the key in a public repo?
-   Yes — the anon key is designed to be public. It grants no
-   access on its own; Row Level Security decides what each
-   signed-in user can read or write. That is why schema.sql
-   switches RLS on for every table before anything else.
+   Safe to publish? Yes. Supabase's own dashboard says
+   "Publishable keys can be safely shared publicly". The key
+   grants nothing by itself; Row Level Security decides what
+   each signed-in user can read or write, which is why
+   schema.sql enables RLS on every table.
 
-   Never put the service_role key in here. That one bypasses
-   every security rule and must stay on a server.
+   Never put the Secret key (sb_secret_…) in here. That one
+   bypasses every rule and belongs on a server, nowhere else.
    ============================================================ */
 
 window.SUPA = {
