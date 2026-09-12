@@ -83,6 +83,26 @@ self.addEventListener("fetch", (event) => {
     url.pathname.endsWith("index.html");
 
   if (isDoc) {
+    // An explicit query (?v=30) means "give me the real thing" — bypass the
+    // cache entirely, so there is always a way to force a fresh copy.
+    if (url.search) {
+      event.respondWith(
+        fetch(req, { cache: "no-store" })
+          .then(async (res) => {
+            if (res && res.ok) {
+              const text = await res.clone().text();
+              const cache = await caches.open(CACHE);
+              await cache.put(self.registration.scope, new Response(text, {
+                headers: { "Content-Type": "text/html; charset=utf-8" },
+              }));
+            }
+            return res;
+          })
+          .catch(async () => (await caches.open(CACHE)).match(self.registration.scope))
+      );
+      return;
+    }
+
     const key = self.registration.scope;
     event.respondWith(
       (async () => {
